@@ -1,0 +1,86 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'beautifulDays' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts following parameters:
+     *  1. INTEGER i
+     *  2. INTEGER j
+     *  3. INTEGER k
+     */
+
+    public static int beautifulDays(int a, int b, int k) {
+    // Write your code here
+    int [] arr= new int[b-a+1];
+    int [] brr= new int[b-a+1];
+    int j=0;
+    for(int i=a;i<=b;i++)
+    {
+        arr[j]=i;
+        j++;
+    }
+    j=0;
+    for( int p : arr)
+    {
+        int num=0,rem=0;
+        while(p!=0)
+        {
+            rem=p%10;
+            num=num*10+rem;
+            p/=10;   
+        }
+        brr[j]=num;
+        j++;
+        num=0;
+    }
+    int count=0;
+    for(int i=0;i<(b-a+1);i++)
+    {
+        if(Math.abs(arr[i]-brr[i])%k==0)
+        {
+            count++;
+        }
+    }
+    
+        System.out.println(Arrays.toString(arr));
+           System.out.println(Arrays.toString(brr));
+return count;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int i = Integer.parseInt(firstMultipleInput[0]);
+
+        int j = Integer.parseInt(firstMultipleInput[1]);
+
+        int k = Integer.parseInt(firstMultipleInput[2]);
+
+        int result = Result.beautifulDays(i, j, k);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
