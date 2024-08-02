@@ -1,0 +1,75 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'timeConversion' function below.
+     *
+     * The function is expected to return a STRING.
+     * The function accepts STRING s as parameter.
+     */
+
+    public static String timeConversion(String s) {
+    // Write your code here
+    int n= s.length();
+    String a = s.substring(n-2,n);
+       System.out.println(a);
+    if(a=="AM")
+    {
+        if(!s.startsWith("12"))
+               return s.substring(0,n-2);
+        else
+           {
+              String x=s.replace("12","00");
+                return x.substring(0,2)+s.substring(3,n-2);
+           } 
+            
+    }
+    else
+    {
+        String b=s.substring(0,2);
+        int i= Integer.parseInt(b);
+        if(i!=12)
+        {
+            i+=12;
+         String c=Integer.toString(i);
+          String x=  s.replace(b, c);
+               System.out.println(c);
+            return x.substring(0,3)+s.substring(3,n-2);
+        }
+         return s.substring(0,n-2);
+    }
+    
+
+ 
+
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String s = bufferedReader.readLine();
+
+        String result = Result.timeConversion(s);
+
+        bufferedWriter.write(result);
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
