@@ -1,0 +1,128 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'componentsInGraph' function below.
+     *
+     * The function is expected to return an INTEGER_ARRAY.
+     * The function accepts 2D_INTEGER_ARRAY gb as parameter.
+     */
+
+    public static List<Integer> componentsInGraph(List<List<Integer>> gb) {
+    // Write your code here
+     int n=gb.size()*2;
+     LinkedList<Integer> adl[];
+     adl= new LinkedList[n+1];
+        for(int i=0;i<=n;i++)
+            adl[i]=new LinkedList<>();
+    
+    for(int i=0;i<gb.size();i++)
+    {
+        int u=gb.get(i).get(0);
+        int v=gb.get(i).get(1);   
+         adl[u].add(v);
+          adl[v].add(u);
+    }
+    
+    System.out.println(Arrays.deepToString(adl));
+    ArrayList<Integer> al= new ArrayList<>();
+   
+        int max=Integer.MIN_VALUE;
+        int min=Integer.MAX_VALUE;
+        
+        Queue<Integer> q = new LinkedList<>();
+    
+        int [] visit = new int[n+1];
+        
+        for(int i=1;i<=n;i++)
+        {
+            if(visit[i]==0)
+            {
+                visit[i]=1;
+                q.offer(i);
+                int c=1;
+              //  System.out.println(!q.isEmpty()+"for "+i);
+                while(!q.isEmpty())
+                {
+                    int x= q.poll();
+                   // System.out.println(x);
+
+                    while(!adl[x].isEmpty())
+                    {
+                        int k=adl[x].getFirst();
+                        
+                        if(visit[k]!=1)
+                        {
+                            //System.out.println(k);
+                            q.offer(k);
+                            
+                            visit[k]=1;
+                            
+                            c+=1;
+                            
+                        }
+                        adl[x].removeFirst();
+                    }
+                }
+                if(c!=1){
+                if(c>max)
+                    max=c;
+                if(c<min)
+                    min=c;
+                }
+              //  System.out.println(min+" "+max+"for"+i);
+            }
+        }
+        al.add(min);
+        al.add(max);
+
+    return al;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<List<Integer>> gb = new ArrayList<>();
+
+        IntStream.range(0, n).forEach(i -> {
+            try {
+                gb.add(
+                    Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                        .map(Integer::parseInt)
+                        .collect(toList())
+                );
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        List<Integer> result = Result.componentsInGraph(gb);
+
+        bufferedWriter.write(
+            result.stream()
+                .map(Object::toString)
+                .collect(joining(" "))
+            + "\n"
+        );
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
